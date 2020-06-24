@@ -27,7 +27,7 @@ def main():
 	template_env = Environment(loader=FileSystemLoader(template_dir))
 	dest = os.path.join(os.getcwd(), name+"Plugin")
 
-	templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc" ]
+	templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc", "metadata.json" ]
 	files = [ ".gitignore" ]
 	dirs = [ "cmake" ]
 
@@ -39,7 +39,11 @@ def main():
 		shutil.copyfile(os.path.join(template_dir, f), os.path.join(dest, f))
 
 	for tfile in templates:
-		with open(os.path.join(dest, tfile),"w") as f:
+		if tfile.find("Template") != -1:
+			filename = tfile.replace("Template", name)
+		else:
+			filename = tfile
+		with open(os.path.join(dest, filename),"w") as f:
 			t = template_env.get_template(tfile)
 
 			f.write(t.render(plugin_name=name))
