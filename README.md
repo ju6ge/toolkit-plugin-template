@@ -1,15 +1,11 @@
 Toolkit Plugin Template
 =======================
 
-Just a simple template of a plugin for rbdl-toolikit build outside of the rbdl-toolikit src tree
+A plugin template which is desinged to be used with the python script to generate new plugin source trees that can be build out of tree of rbdl-toolkit.
 
 Usage
 ====
 
 ```shell
-mkdir build 
-cd build
-cmake -DCUSTOM_QT_PATH=<QT_Lib_PATH> -DCMAKE_BUILD_TYPE=Release -DTOOLKIT_BUILD_PATH=<Toolkit_Build_DIR> -DTOOLKIT_SOURCE_PATH=<Toolkit_Source_DIR> ..
-make
-sudo make install
+./create_plugin.py --name CameCaseName --dir <path where src tree will be created>
 ```
