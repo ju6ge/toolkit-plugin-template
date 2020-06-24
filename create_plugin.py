@@ -5,7 +5,7 @@ import os
 import shutil
 
 def main():
-	template_dir = os.path.dirname(os.path.abspath(__file__))
+	template_dir = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 
 	parser = argparse.ArgumentParser(description="Script to generate new Plugins for RBDL-Toolkit")
 	parser.add_argument('--name', dest='plugin_name', type=str, help="Plugin Name, use CamelCase (no need to add Plugin at the End 😉)")
