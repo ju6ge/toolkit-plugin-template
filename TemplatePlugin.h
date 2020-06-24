@@ -1,18 +1,18 @@
-#ifndef CAMERAOPERATORPLUGIN_H_INCLUDED
-#define CAMERAOPERATORPLUGIN_H_INCLUDED
+#ifndef {{ plugin_name | upper }}PLUGIN_H_INCLUDED
+#define {{ plugin_name | upper }}PLUGIN_H_INCLUDED
 
 #include <QWidget>
 
 #include "toolkit_interfaces.h"
 
-class TemplatePlugin : public QObject, public OptionalInterface {
+class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 	Q_OBJECT
 	Q_INTERFACES(OptionalInterface)
 	Q_PLUGIN_METADATA(IID OptionalInterface_iid FILE "metadata.json")
 
 	public:
-		TemplatePlugin();
-		virtual ~TemplatePlugin();
+		{{ plugin_name }}Plugin();
+		virtual ~{{ plugin_name }}Plugin();
 
 		void init(ToolkitApp* app);
 

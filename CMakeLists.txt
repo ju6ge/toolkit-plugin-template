@@ -1,15 +1,15 @@
-PROJECT(TemplatePlugin)
+PROJECT({{ plugin_name }}Plugin)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 	
-SET(TemplatePlugin_SRCS
-	TemplatePlugin.cc
+SET(Plugin_SRCS
+	{{ plugin_name }}Plugin.cc
 )
 
-SET(TemplatePlugin_MOC_HDRS
+SET({{ plugin_name }}Plugin_MOC_HDRS
 	include/toolkit_interfaces.h
-	TemplatePlugin.h
+	{{ plugin_name }}Plugin.h
 )
 
 SET( QT_USE_QTXML TRUE )
@@ -60,9 +60,9 @@ ADD_DEFINITIONS (${QT_DEFINITIONS})
 ADD_DEFINITIONS (-DQT_PLUGIN)
 ADD_DEFINITIONS (-DQT_SHARED)
 
-ADD_LIBRARY (templateplugin SHARED ${TemplatePlugin_SRCS})
+ADD_LIBRARY ({{ plugin_name | lower }}plugin SHARED ${Plugin_SRCS})
 
-TARGET_LINK_LIBRARIES (templateplugin 
+TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin 
 	${QT_LIBRARIES} 
 	${QT_QTXML_LIBRARY} 
 	Qt5::Core
@@ -75,4 +75,4 @@ TARGET_LINK_LIBRARIES (templateplugin
 	${RBDL_LIBRARY}
 )
 
-INSTALL( TARGETS templateplugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	
+INSTALL( TARGETS {{ plugin_name | lower }}plugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	

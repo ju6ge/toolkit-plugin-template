@@ -1,17 +1,17 @@
-#include "TemplatePlugin.h"
+#include "{{ plugin_name }}Plugin.h"
 #include <iostream>
 
-TemplatePlugin::TemplatePlugin() {
+{{ plugin_name }}Plugin::{{ plugin_name }}Plugin() {
 	parentApp = NULL;
 }
 
-TemplatePlugin::~TemplatePlugin() {
+{{ plugin_name }}Plugin::~{{ plugin_name }}Plugin() {
 }
 
-void TemplatePlugin::init(ToolkitApp* app) {
+void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 	//save reference to parent ToolkitApp 
 	parentApp = app;
 
-	std::cout << "TemplatePlugin loaded" << std::endl;
+	std::cout << "{{ plugin_name }}Plugin loaded" << std::endl;
 }
 
