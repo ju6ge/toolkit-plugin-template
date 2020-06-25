@@ -4,6 +4,7 @@ import argparse
 import os
 import shutil
 
+
 def main():
 	template_dir = os.path.dirname(os.path.realpath(os.path.abspath(__file__)))
 
@@ -11,6 +12,12 @@ def main():
 	parser.add_argument('--name', dest='plugin_name', type=str, help="Plugin Name, use CamelCase (no need to add Plugin at the End 😉)")
 	parser.add_argument('--dir', dest='plugin_dir', type=str, help="Path to where the Plugin Sources should be put. Will create Subfolder there", default=".")
 	parser.add_argument('--extention', dest='add_extention', action="store_true", help="Also adds the Model Extention template")
+	parser.add_argument('--3d', dest='qt3d', action="store_true", help="Adds 3D includes")
+	parser.add_argument('--settings', dest='settings', action="store_true", help="Adds structure for readings/writings settings")
+	parser.add_argument('--cmd', dest='cmd', action="store_true", help="Adds structure for command line settings")
+	parser.add_argument('--filereader', dest='filereader', action="store_true", help="Adds structure for filereading")
+	parser.add_argument('--core', dest='core', action="store_true", help="Create Core plugin instead of Optional Plugin")
+	parser.add_argument('--intree', dest='intree', action="store_true", help="Plugin will be build in rbdl-toolkit src tree")
 
 	args = parser.parse_args()
 
@@ -21,6 +28,12 @@ def main():
 
 	name = args.plugin_name
 	add_extention = args.add_extention
+	qt3d = args.qt3d
+	filereader = args.filereader
+	cmd = args.cmd
+	core = args.core
+	intree = args.intree
+	settings = args.settings
 
 	#change dir to where to create plugin folder
 	os.chdir(args.plugin_dir)
@@ -35,12 +48,14 @@ def main():
 	files = [ ".gitignore" ]
 	dirs = [ "cmake" ]
 
-	for d in dirs:
-		src = os.path.join(template_dir, d)
-		shutil.copytree(src, os.path.join(dest, d))
+	#only copy cmake dir and gitignore if building out of tree
+	if not intree:
+		for d in dirs:
+			src = os.path.join(template_dir, d)
+			shutil.copytree(src, os.path.join(dest, d))
 
-	for f in files:
-		shutil.copyfile(os.path.join(template_dir, f), os.path.join(dest, f))
+		for f in files:
+			shutil.copyfile(os.path.join(template_dir, f), os.path.join(dest, f))
 
 	for tfile in templates:
 		if tfile.find("Template") != -1:
@@ -53,7 +68,7 @@ def main():
 				text = """{{ plugin_name }}Plugin
 =======================
 
-# Build and Install
+## Build and Install
 
 With these commands you can build this plugin outside of the rbdl-toolkit src tree, but you will also need to have a rbdl-toolkit build dir.
 
@@ -68,7 +83,7 @@ sudo make install
 				t = Template(text)
 			else:
 				t = template_env.get_template(tfile)
-			f.write(t.render(plugin_name=name, add_extention=add_extention))
+			f.write(t.render(plugin_name=name, add_extention=add_extention, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree))
 
 if __name__ == "__main__":
 	main()

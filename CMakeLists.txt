@@ -1,12 +1,14 @@
 PROJECT({{ plugin_name }}Plugin)
+{% if not intree -%}
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
+{%- endif %}
 	
 SET(Plugin_SRCS
-	{% if add_extention %}
+	{% if add_extention -%}
 	{{ plugin_name }}ModelExtention.cc
-	{% endif %}
+	{%- endif %}
 	{{ plugin_name }}Plugin.cc
 )
 
@@ -15,12 +17,11 @@ SET({{ plugin_name }}Plugin_MOC_HDRS
 	{{ plugin_name }}Plugin.h
 )
 
-SET( QT_USE_QTXML TRUE )
-SET( QT_WRAP_CPP TRUE )
 SET(CMAKE_AUTORCC ON )
 SET(CMAKE_AUTOUIC ON )
 SET(CMAKE_AUTOMOC ON )
 
+{% if not intree -%}
 SET(TOOLKIT_SOURCE_PATH "" CACHE PATH "Path to Toolkit Source Code")
 SET(TOOLKIT_BUILD_PATH "" CACHE PATH "Path to Toolkit Build Dir")
 
@@ -44,18 +45,25 @@ IF (CUSTOM_QT_PATH)
 	SET(CMAKE_PREFIX_PATH "${CUSTOM_QT_PATH}/cmake")
 ENDIF(CUSTOM_QT_PATH)
 
-SET( PLUGIN_INSTALL_DIR share/ORB/rbdl-toolkit/plugins )
-
 FIND_PACKAGE (Qt5 REQUIRED COMPONENTS Core Gui Widgets 3DCore 3DExtras 3DRender 3DInput)
 FIND_PACKAGE (RBDL COMPONENTS LUAMODEL REQUIRED)
 FIND_PACKAGE (Eigen3 REQUIRED)
+
+SET( PLUGIN_INSTALL_DIR share/ORB/rbdl-toolkit/plugins )
+{%- endif %}
 	
-INCLUDE_DIRECTORIES (${QT_INCLUDE_DIR})
+{% if not intree -%}
 INCLUDE_DIRECTORIES( ${TOOLKIT_BUILD_PATH} )
 INCLUDE_DIRECTORIES( ${TOOLKIT_BUILD_PATH}/include )
 INCLUDE_DIRECTORIES( ${TOOLKIT_SOURCE_PATH} )
 INCLUDE_DIRECTORIES (${TOOLKIT_SOURCE_PATH}/include)
+{%- else -%}
+INCLUDE_DIRECTORIES( ${CMAKE_SOURCE_DIR} )
+INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/include)
+{%- endif %}
+INCLUDE_DIRECTORIES (${QT_INCLUDE_DIR})
 INCLUDE_DIRECTORIES (${CMAKE_CURRENT_SOURCE_DIR})
+INCLUDE_DIRECTORIES (${CMAKE_CURRENT_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES (${RBDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES (${EIGEN3_INCLUDE_DIR})
 

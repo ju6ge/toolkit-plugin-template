@@ -1,5 +1,15 @@
 #include "{{ plugin_name }}ModelExtention.h"
 
+{% if qt3d -%}
+#include <Qt3DCore>
+#include <Qt3DRender>
+#include <Qt3DExtras>
+
+using namespace Qt3DCore;
+using namespace Qt3DRender;
+using namespace Qt3DExtras;
+{%- endif %}
+
 {{ plugin_name }}ModelExtention::{{ plugin_name }}ModelExtention() : WrapperExtention() 
 {
 }

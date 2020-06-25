@@ -2,6 +2,10 @@
 #define {{ plugin_name | upper }}MODELEXTENTION_H_INCLUDED
 
 #include <rbdl_wrapper.h>
+{% if qt3d -%}
+#include <Qt3DRender>
+#include <Qt3DCore>
+{%- endif %}
 
 class {{ plugin_name }}ModelExtention : public WrapperExtention {
 	private:

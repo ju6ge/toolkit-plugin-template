@@ -3,10 +3,10 @@ Toolkit Plugin Template
 
 A plugin template which is desinged to be used with the python script to generate new plugin source trees that can be build out of tree of rbdl-toolkit.
 
-# Dependencies
+## Dependencies
 - jinja2
 
-# Usage
+## Usage
 
 To create a simple basic plugin run the following command:
 
@@ -18,4 +18,9 @@ To also create a model extention alongside the plugin run:
 
 ```shell
 ./create_plugin.py --name CameCaseName --dir <path where src tree will be created> --extention
+```
+
+To see all options run:
+```shell
+./create_plugin.py --help
 ```
