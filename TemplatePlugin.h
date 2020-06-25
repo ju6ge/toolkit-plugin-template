@@ -4,6 +4,9 @@
 #include <QWidget>
 
 #include "toolkit_interfaces.h"
+{% if add_extention %}
+#include "{{ plugin_name }}ModelExtention.h"
+{% endif %}
 
 class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 	Q_OBJECT

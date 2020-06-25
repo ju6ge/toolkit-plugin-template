@@ -4,6 +4,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 	
 SET(Plugin_SRCS
+	{% if add_extention %}
+	{{ plugin_name }}ModelExtention.cc
+	{% endif %}
 	{{ plugin_name }}Plugin.cc
 )
 
