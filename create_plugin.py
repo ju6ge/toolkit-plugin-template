@@ -48,7 +48,7 @@ def main():
 	if add_extention:
 		templates += ["TemplateModelExtention.h", "TemplateModelExtention.cc"]
 	files = [ ".gitignore" ]
-	dirs = [ "cmake" ]
+	dirs = [ ]
 
 	#only copy cmake dir and gitignore if building out of tree
 	if not intree:

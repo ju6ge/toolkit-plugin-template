@@ -2,7 +2,6 @@ PROJECT({{ plugin_name }}Plugin)
 {% if not intree -%}
 CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
-LIST( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 {%- endif %}
 	
 SET(Plugin_SRCS
@@ -34,6 +33,8 @@ if(TOOLKIT_SOURCE_PATH)
 else()
 	MESSAGE( FATAL_ERROR "You need to supply the path to the toolkit source code")
 endif()
+
+LIST( APPEND CMAKE_MODULE_PATH ${TOOLKIT_SOURCE_PATH}/cmake )
 
 SET(CUSTOM_QT_PATH "" CACHE PATH "Path to Qt Installation")
 IF (CUSTOM_QT_PATH)
