@@ -18,6 +18,7 @@ def main():
 	parser.add_argument('--filereader', dest='filereader', action="store_true", help="Adds structure for filereading")
 	parser.add_argument('--core', dest='core', action="store_true", help="Create Core plugin instead of Optional Plugin")
 	parser.add_argument('--intree', dest='intree', action="store_true", help="Plugin will be build in rbdl-toolkit src tree")
+	parser.add_argument('--reload', dest='reload', action="store_true", help="Add Structure for easy reloading of data")
 
 	args = parser.parse_args()
 
@@ -34,6 +35,7 @@ def main():
 	core = args.core
 	intree = args.intree
 	settings = args.settings
+	reload = args.reload
 
 	#change dir to where to create plugin folder
 	os.chdir(args.plugin_dir)
@@ -83,7 +85,7 @@ sudo make install
 				t = Template(text)
 			else:
 				t = template_env.get_template(tfile)
-			f.write(t.render(plugin_name=name, add_extention=add_extention, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree))
+			f.write(t.render(plugin_name=name, add_extention=add_extention, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree, reload=reload))
 
 if __name__ == "__main__":
 	main()

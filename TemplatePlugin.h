@@ -11,6 +11,7 @@
 {% if add_extention -%}
 #include "{{ plugin_name }}ModelExtention.h"
 {%- endif %}
+
 {% if core -%}
 class {{ plugin_name }}Plugin : public QObject, public CoreInterface {
 	Q_OBJECT
@@ -38,10 +39,17 @@ class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 		{% if settings -%}
 		void load{{ plugin_name }}Settings();
 		{%- endif %}
+		{% if add_extention and reload -%}
+		std::map<RBDLModelWrapper*, QString> model_file_map;
+		{%- endif %}
 	public slots:
 		{% if filereader -%}
 		void action_load_data();
 		{%- endif %}
+		{% if reload -%}
+		void reload(RBDLModelWrapper* model);
+		{%- endif %}
+
 };
 
 #endif 

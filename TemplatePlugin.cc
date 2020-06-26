@@ -58,6 +58,9 @@ void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 
 				if (rbdl_model != nullptr) {
 					rbdl_model->addExtention(ext);
+					{% if reload -%}
+					model_file_map[rbdl_model] = file;
+					{%- endif %}
 				} else {
 					delete ext;
 				}
@@ -74,6 +77,10 @@ void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 	{%- endif %}
 
 	std::cout << "{{ plugin_name }}Plugin loaded" << std::endl;
+
+	{% if reload -%}
+	connect(parentApp, &ToolkitApp::reloaded_model, this, &{{ plugin_name }}Plugin::reload);
+	{%- endif %}
 }
 
 {% if settings -%}
@@ -119,7 +126,7 @@ void {{ plugin_name }}Plugin::action_load_data() {
 				delete ext;
 				{%- endif %}
 			}
-			{%- if add_extention -%}
+			{% if add_extention -%}
 			if (parentApp->getLoadedModels()->size() != 0) {
 				RBDLModelWrapper* rbdl_model = nullptr;
 
@@ -131,6 +138,9 @@ void {{ plugin_name }}Plugin::action_load_data() {
 
 				if (rbdl_model != nullptr) {
 					rbdl_model->addExtention(ext);
+					{% if reload -%}
+					model_file_map[rbdl_model] = file_dialog.selectedFiles().at(0);
+					{%- endif %}
 				} else {
 					delete ext;
 				}
@@ -151,5 +161,18 @@ void {{ plugin_name }}Plugin::action_load_data() {
 	//implement open of file + read data + put in extention here
 
 	return extention;
+}
+{%- endif %}
+
+{% if reload -%}
+void {{ plugin_name }}Plugin::reload(RBDLModelWrapper *model) {
+	{% if add_extention -%}
+	for (auto it = model_file_map.begin(); it != model_file_map.end(); it++) {
+		if ( it->first == model ) {
+			auto ext = load{{ plugin_name }}File(it->second);
+			model->addExtention(ext);
+		}
+	}
+	{%- endif %}
 }
 {%- endif %}
