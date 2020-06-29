@@ -39,31 +39,25 @@ void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 	parentApp->addCmdOption({{ plugin_name | lower }}_option, [this](QCommandLineParser& parser){
 		auto data_list = parser.values("{{ plugin_name | lower }}");
 		{% if add_extention -%}
-		for (auto file : data_list) {
-			{{ plugin_name }}ModelExtention* ext;
-			try {
-				ext = load{{ plugin_name }}File(file);
-			} catch (RigidBodyDynamics::Errors::RBDLError& e){
-				ToolkitApp::showExceptionDialog(e);
-				delete ext;
-			}
-			if (parentApp->getLoadedModels()->size() != 0) {
-				RBDLModelWrapper* rbdl_model = nullptr;
-
-				if (parentApp->getLoadedModels()->size() == 1) {
-					rbdl_model = parentApp->getLoadedModels()->at(0);
-				} else {
-					rbdl_model = parentApp->selectModel(nullptr);
+		for (int i=0; i<data_list.size(); i++) {
+			if (i < parentApp->getLoadedModels()->size() ) {
+				auto file = data_list[i];
+				{{ plugin_name }}ModelExtention* ext = nullptr;
+				try {
+					ext = load{{ plugin_name }}File(file);
+				} catch (RigidBodyDynamics::Errors::RBDLError& e){
+					ToolkitApp::showExceptionDialog(e);
+					if (ext != nullptr)
+						delete ext;
+					continue;
 				}
-
-				if (rbdl_model != nullptr) {
-					rbdl_model->addExtention(ext);
-					{% if reload -%}
-					model_file_map[rbdl_model] = file;
-					{%- endif %}
-				} else {
-					delete ext;
-				}
+				RBDLModelWrapper* rbdl_model = parentApp->getLoadedModels()->at(i);
+				rbdl_model->addExtention(ext);
+				{% if reload -%}
+				model_file_map[rbdl_model] = file;
+				{%- endif %}
+			} else {
+				std::cout << QString("{{ plugin_name }} file %1 can not be mapped to a model ... Ignoring!").arg(data_list[i]).toStdString() << std::endl;
 			}
 		}
 		{% else -%}
