@@ -12,6 +12,7 @@ def main():
 	parser.add_argument('--name', dest='plugin_name', type=str, help="Plugin Name, use CamelCase (no need to add Plugin at the End 😉)")
 	parser.add_argument('--dir', dest='plugin_dir', type=str, help="Path to where the Plugin Sources should be put. Will create Subfolder there", default=".")
 	parser.add_argument('--extention', dest='add_extention', action="store_true", help="Also adds the Model Extention template")
+	parser.add_argument('--all', dest='all', action="store_true", help="Build plugin with all option except for intree")
 	parser.add_argument('--3d', dest='qt3d', action="store_true", help="Adds 3D includes")
 	parser.add_argument('--settings', dest='settings', action="store_true", help="Adds structure for readings/writings settings")
 	parser.add_argument('--cmd', dest='cmd', action="store_true", help="Adds structure for command line settings")
@@ -28,14 +29,24 @@ def main():
 		return
 
 	name = args.plugin_name
-	add_extention = args.add_extention
-	qt3d = args.qt3d
-	filereader = args.filereader
-	cmd = args.cmd
-	core = args.core
 	intree = args.intree
-	settings = args.settings
-	reload = args.reload
+
+	if not args.all:
+		add_extention = args.add_extention
+		qt3d = args.qt3d
+		filereader = args.filereader
+		cmd = args.cmd
+		core = args.core
+		settings = args.settings
+		reload = args.reload
+	else:
+		add_extention = True
+		qt3d = True
+		filereader = True
+		cmd = True
+		core = True
+		settings = True
+		reload = True
 
 	#change dir to where to create plugin folder
 	os.chdir(args.plugin_dir)
