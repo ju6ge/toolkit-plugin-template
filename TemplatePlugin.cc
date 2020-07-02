@@ -108,19 +108,16 @@ void {{ plugin_name }}Plugin::action_load_data() {
 		{{ plugin_name }}ModelExtention* ext;
 		{%- endif %}
 		if (file_dialog.exec()) {
-			QString filepath;
+			QString filepath = file_dialog.selectedFiles().at(0);
+			{% if add_extention -%}
 			try {
-				filepath = file_dialog.selectedFiles().at(0);
-				{%- if add_extention -%}
 				ext = load{{ plugin_name }}File(filepath);
-				{%- endif %}
 			} catch (RigidBodyDynamics::Errors::RBDLError& e){
 				ToolkitApp::showExceptionDialog(e);
-				{%- if add_extention -%}
+				{% if add_extention -%}
 				delete ext;
 				{%- endif %}
 			}
-			{% if add_extention -%}
 			if (parentApp->getLoadedModels()->size() != 0) {
 				RBDLModelWrapper* rbdl_model = nullptr;
 

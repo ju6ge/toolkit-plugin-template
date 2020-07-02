@@ -24,3 +24,7 @@ To see all options run:
 ```shell
 ./create_plugin.py --help
 ```
+
+## Toolkit Plugin Documentation 
+
+There is an [article](https://github.com/ORB-HD/rbdl-toolkit/wiki/Writing-a-toolkit-plugin) in the toolkit wiki on the most important parts of most plugins.

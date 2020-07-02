@@ -11,8 +11,8 @@ def main():
 	parser = argparse.ArgumentParser(description="Script to generate new Plugins for RBDL-Toolkit")
 	parser.add_argument('--name', dest='plugin_name', type=str, help="Plugin Name, use CamelCase (no need to add Plugin at the End 😉)")
 	parser.add_argument('--dir', dest='plugin_dir', type=str, help="Path to where the Plugin Sources should be put. Will create Subfolder there", default=".")
-	parser.add_argument('--extention', dest='add_extention', action="store_true", help="Also adds the Model Extention template")
-	parser.add_argument('--all', dest='all', action="store_true", help="Build plugin with all option except for intree")
+	parser.add_argument('--extension', dest='add_extension', action="store_true", help="Also adds the Model Extention template")
+	parser.add_argument('--all', dest='all', action="store_true", help="Build plugin with all option except for intree and core")
 	parser.add_argument('--3d', dest='qt3d', action="store_true", help="Adds 3D includes")
 	parser.add_argument('--settings', dest='settings', action="store_true", help="Adds structure for readings/writings settings")
 	parser.add_argument('--cmd', dest='cmd', action="store_true", help="Adds structure for command line settings")
@@ -30,21 +30,20 @@ def main():
 
 	name = args.plugin_name
 	intree = args.intree
+	core = args.core
 
 	if not args.all:
-		add_extention = args.add_extention
+		add_extension = args.add_extension
 		qt3d = args.qt3d
 		filereader = args.filereader
 		cmd = args.cmd
-		core = args.core
 		settings = args.settings
 		reload = args.reload
 	else:
-		add_extention = True
+		add_extension = True
 		qt3d = True
 		filereader = True
 		cmd = True
-		core = True
 		settings = True
 		reload = True
 
@@ -56,7 +55,7 @@ def main():
 	dest = os.path.join(os.getcwd(), name+"Plugin")
 
 	templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc", "metadata.json", "README.md"]
-	if add_extention:
+	if add_extension:
 		templates += ["TemplateModelExtention.h", "TemplateModelExtention.cc"]
 	files = [ ".gitignore" ]
 	dirs = [ ]
@@ -96,7 +95,7 @@ sudo make install
 				t = Template(text)
 			else:
 				t = template_env.get_template(tfile)
-			f.write(t.render(plugin_name=name, add_extention=add_extention, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree, reload=reload))
+			f.write(t.render(plugin_name=name, add_extention=add_extension, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree, reload=reload))
 
 if __name__ == "__main__":
 	main()
