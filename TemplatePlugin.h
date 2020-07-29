@@ -42,7 +42,7 @@ class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 		{% if add_extention and reload -%}
 		std::map<RBDLModelWrapper*, QString> model_file_map;
 		{%- endif %}
-	public slots:
+	public Q_SLOTS:
 		{% if filereader -%}
 		void action_load_data();
 		{%- endif %}
