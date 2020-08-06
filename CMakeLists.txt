@@ -85,6 +85,7 @@ TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin
 	Qt5::3DRender
 	Qt5::3DInput
 	${RBDL_LIBRARY}
+	toolkitlib
 )
 
 INSTALL( TARGETS {{ plugin_name | lower }}plugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	
