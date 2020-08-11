@@ -11,7 +11,7 @@ def main():
 	parser = argparse.ArgumentParser(description="Script to generate new Plugins for RBDL-Toolkit")
 	parser.add_argument('--name', dest='plugin_name', type=str, help="Plugin Name, use CamelCase (no need to add Plugin at the End 😉)")
 	parser.add_argument('--dir', dest='plugin_dir', type=str, help="Path to where the Plugin Sources should be put. Will create Subfolder there", default=".")
-	parser.add_argument('--extension', dest='add_extension', action="store_true", help="Also adds the Model Extention template")
+	parser.add_argument('--extension', dest='add_extension', action="store_true", help="Also adds the Model Extension template")
 	parser.add_argument('--all', dest='all', action="store_true", help="Build plugin with all option except for intree and core")
 	parser.add_argument('--3d', dest='qt3d', action="store_true", help="Adds 3D includes")
 	parser.add_argument('--settings', dest='settings', action="store_true", help="Adds structure for readings/writings settings")
@@ -56,7 +56,7 @@ def main():
 
 	templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc", "metadata.json", "README.md"]
 	if add_extension:
-		templates += ["TemplateModelExtention.h", "TemplateModelExtention.cc"]
+		templates += ["TemplateModelExtension.h", "TemplateModelExtension.cc"]
 	files = [ ".gitignore" ]
 	dirs = [ ]
 
@@ -95,7 +95,7 @@ sudo make install
 				t = Template(text)
 			else:
 				t = template_env.get_template(tfile)
-			f.write(t.render(plugin_name=name, add_extention=add_extension, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree, reload=reload))
+			f.write(t.render(plugin_name=name, add_extension=add_extension, qt3d=qt3d, filereader=filereader, cmd=cmd, settings=settings, core=core, intree=intree, reload=reload))
 
 if __name__ == "__main__":
 	main()

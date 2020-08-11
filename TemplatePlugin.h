@@ -8,8 +8,8 @@
 #include "toolkit_errors.h"
 #include "util.h"
 
-{% if add_extention -%}
-#include "{{ plugin_name }}ModelExtention.h"
+{% if add_extension -%}
+#include "{{ plugin_name }}ModelExtension.h"
 {%- endif %}
 
 {% if core -%}
@@ -28,8 +28,8 @@ class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 		virtual ~{{ plugin_name }}Plugin();
 
 		void init(ToolkitApp* app);
-		{% if add_extention and filereader -%}
-		{{ plugin_name }}ModelExtention* load{{ plugin_name }}File(QString path);
+		{% if add_extension and filereader -%}
+		{{ plugin_name }}ModelExtension* load{{ plugin_name }}File(QString path);
 		{%- endif %}
 	private:
 		ToolkitApp* parentApp;
@@ -39,7 +39,7 @@ class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 		{% if settings -%}
 		void load{{ plugin_name }}Settings();
 		{%- endif %}
-		{% if add_extention and reload -%}
+		{% if add_extension and reload -%}
 		std::map<RBDLModelWrapper*, QString> model_file_map;
 		{%- endif %}
 	public Q_SLOTS:

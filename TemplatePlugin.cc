@@ -9,7 +9,7 @@
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 {%- endif %}
-{% if add_extention -%}
+{% if add_extension -%}
 #include <rbdl_wrapper.h>
 {%- endif %}
 
@@ -38,11 +38,11 @@ void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 	                               );
 	parentApp->addCmdOption({{ plugin_name | lower }}_option, [this](QCommandLineParser& parser){
 		auto data_list = parser.values("{{ plugin_name | lower }}");
-		{% if add_extention -%}
+		{% if add_extension -%}
 		for (int i=0; i<data_list.size(); i++) {
 			if (i < parentApp->getLoadedModels()->size() ) {
 				auto file = data_list[i];
-				{{ plugin_name }}ModelExtention* ext = nullptr;
+				{{ plugin_name }}ModelExtension* ext = nullptr;
 				try {
 					ext = load{{ plugin_name }}File(file);
 				} catch (RigidBodyDynamics::Errors::RBDLError& e){
@@ -52,7 +52,7 @@ void {{ plugin_name }}Plugin::init(ToolkitApp* app) {
 					continue;
 				}
 				RBDLModelWrapper* rbdl_model = parentApp->getLoadedModels()->at(i);
-				rbdl_model->addExtention(ext);
+				rbdl_model->addExtension(ext);
 				{% if reload -%}
 				model_file_map[rbdl_model] = file;
 				{%- endif %}
@@ -104,17 +104,17 @@ void {{ plugin_name }}Plugin::action_load_data() {
 		//file_dialog.setNameFilter(tr("{{ plugin_name }} File (*.txt)"));
 		file_dialog.setFileMode(QFileDialog::ExistingFile);
 
-		{% if add_extention -%}
-		{{ plugin_name }}ModelExtention* ext;
+		{% if add_extension -%}
+		{{ plugin_name }}ModelExtension* ext;
 		{%- endif %}
 		if (file_dialog.exec()) {
 			QString filepath = file_dialog.selectedFiles().at(0);
-			{% if add_extention -%}
+			{% if add_extension -%}
 			try {
 				ext = load{{ plugin_name }}File(filepath);
 			} catch (RigidBodyDynamics::Errors::RBDLError& e){
 				ToolkitApp::showExceptionDialog(e);
-				{% if add_extention -%}
+				{% if add_extension -%}
 				delete ext;
 				{%- endif %}
 			}
@@ -128,7 +128,7 @@ void {{ plugin_name }}Plugin::action_load_data() {
 				}
 
 				if (rbdl_model != nullptr) {
-					rbdl_model->addExtention(ext);
+					rbdl_model->addExtension(ext);
 					{% if reload -%}
 					model_file_map[rbdl_model] = file_dialog.selectedFiles().at(0);
 					{%- endif %}
@@ -145,23 +145,23 @@ void {{ plugin_name }}Plugin::action_load_data() {
 }
 {%- endif %}
 
-{% if filereader and add_extention -%}
-{{ plugin_name }}ModelExtention* {{ plugin_name }}Plugin::load{{ plugin_name }}File(QString path) {
-	{{ plugin_name }}ModelExtention* extention = new {{ plugin_name }}ModelExtention();
+{% if filereader and add_extension -%}
+{{ plugin_name }}ModelExtension* {{ plugin_name }}Plugin::load{{ plugin_name }}File(QString path) {
+	{{ plugin_name }}ModelExtension* extension = new {{ plugin_name }}ModelExtension();
 
-	//implement open of file + read data + put in extention here
+	//implement open of file + read data + put in extension here
 
-	return extention;
+	return extension;
 }
 {%- endif %}
 
 {% if reload -%}
 void {{ plugin_name }}Plugin::reload(RBDLModelWrapper *model) {
-	{% if add_extention -%}
+	{% if add_extension -%}
 	for (auto it = model_file_map.begin(); it != model_file_map.end(); it++) {
 		if ( it->first == model ) {
 			auto ext = load{{ plugin_name }}File(it->second);
-			model->addExtention(ext);
+			model->addExtension(ext);
 		}
 	}
 	{%- endif %}

@@ -14,10 +14,10 @@ To create a simple basic plugin run the following command:
 ./create_plugin.py --name CameCaseName --dir <path where src tree will be created>
 ```
 
-To also create a model extention alongside the plugin run:
+To also create a model extension alongside the plugin run:
 
 ```shell
-./create_plugin.py --name CameCaseName --dir <path where src tree will be created> --extention
+./create_plugin.py --name CameCaseName --dir <path where src tree will be created> --extension
 ```
 
 To see all options run:

@@ -5,8 +5,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 {%- endif %}
 	
 SET(Plugin_SRCS
-	{% if add_extention -%}
-	{{ plugin_name }}ModelExtention.cc
+	{% if add_extension -%}
+	{{ plugin_name }}ModelExtension.cc
 	{%- endif %}
 	{{ plugin_name }}Plugin.cc
 )
@@ -28,6 +28,7 @@ if(TOOLKIT_BUILD_PATH)
 else()
   MESSAGE( FATAL_ERROR "You need to supply the path to the build dir of the toolkit, since you will require certain headers generated during the build process!")
 endif()
+
 
 if(TOOLKIT_SOURCE_PATH)
 else()
@@ -68,6 +69,8 @@ INCLUDE_DIRECTORIES (${CMAKE_CURRENT_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES (${RBDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES (${EIGEN3_INCLUDE_DIR})
 
+FIND_LIBRARY(TOOLKIT_LIB NAMES toolkitlib PATHS ${TOOLKIT_BUILD_PATH})
+
 ADD_DEFINITIONS (${QT_DEFINITIONS})
 ADD_DEFINITIONS (-DQT_PLUGIN)
 ADD_DEFINITIONS (-DQT_SHARED)
@@ -85,7 +88,7 @@ TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin
 	Qt5::3DRender
 	Qt5::3DInput
 	${RBDL_LIBRARY}
-	toolkitlib
+	${TOOLKIT_LIB}
 )
 
 INSTALL( TARGETS {{ plugin_name | lower }}plugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	
