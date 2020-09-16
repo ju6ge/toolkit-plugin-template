@@ -91,6 +91,10 @@ cmake -DCUSTOM_QT_PATH=<QT_Lib_PATH> -DCMAKE_BUILD_TYPE=Release -DTOOLKIT_BUILD_
 make
 sudo make install
 ```
+
+### Build for use with AppImage
+
+To build this plugin for use with the rbdl-toolkit.AppImage use the toolkit-buildplugin.AppImage which can be found in the rbdl-toolkit release.
 """
 				t = Template(text)
 			else:
