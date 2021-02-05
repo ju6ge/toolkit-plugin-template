@@ -20,6 +20,7 @@ def main():
 	parser.add_argument('--core', dest='core', action="store_true", help="Create Core plugin instead of Optional Plugin")
 	parser.add_argument('--intree', dest='intree', action="store_true", help="Plugin will be build in rbdl-toolkit src tree")
 	parser.add_argument('--reload', dest='reload', action="store_true", help="Add Structure for easy reloading of data")
+	parser.add_argument('--only-extention', dest='onlyextention', action="store_true", help="Only create files for a model extention")
 
 	args = parser.parse_args()
 
@@ -49,25 +50,32 @@ def main():
 
 	#change dir to where to create plugin folder
 	os.chdir(args.plugin_dir)
-	os.mkdir(name+"Plugin")
+	if not args.onlyextention:
+		os.mkdir(name+"Plugin")
 
 	template_env = Environment(loader=FileSystemLoader(template_dir))
-	dest = os.path.join(os.getcwd(), name+"Plugin")
+	if not args.onlyextention:
+		dest = os.path.join(os.getcwd(), name+"Plugin")
+	else: 
+		dest = os.getcwd()
 
-	templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc", "metadata.json", "README.md"]
-	if add_extension:
-		templates += ["TemplateModelExtension.h", "TemplateModelExtension.cc"]
-	files = [ ".gitignore" ]
-	dirs = [ ]
+	if args.onlyextention:
+		templates = [ "TemplateModelExtension.h", "TemplateModelExtension.cc"]
+	else:   
+		templates = [ "CMakeLists.txt", "TemplatePlugin.h", "TemplatePlugin.cc", "metadata.json", "README.md"]
+		if add_extension:
+			templates += ["TemplateModelExtension.h", "TemplateModelExtension.cc"]
+		files = [ ".gitignore" ]
+		dirs = [ ]
 
-	#only copy cmake dir and gitignore if building out of tree
-	if not intree:
-		for d in dirs:
-			src = os.path.join(template_dir, d)
-			shutil.copytree(src, os.path.join(dest, d))
+		#only copy cmake dir and gitignore if building out of tree
+		if not intree:
+			for d in dirs:
+				src = os.path.join(template_dir, d)
+				shutil.copytree(src, os.path.join(dest, d))
 
-		for f in files:
-			shutil.copyfile(os.path.join(template_dir, f), os.path.join(dest, f))
+			for f in files:
+				shutil.copyfile(os.path.join(template_dir, f), os.path.join(dest, f))
 
 	for tfile in templates:
 		if tfile.find("Template") != -1:
