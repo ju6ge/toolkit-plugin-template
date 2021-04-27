@@ -69,7 +69,9 @@ INCLUDE_DIRECTORIES (${CMAKE_CURRENT_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES (${RBDL_INCLUDE_DIR})
 INCLUDE_DIRECTORIES (${EIGEN3_INCLUDE_DIR})
 
+{% if not intree -%}
 FIND_LIBRARY(TOOLKIT_LIB NAMES toolkitlib PATHS ${TOOLKIT_BUILD_PATH})
+{%- endif %}
 
 ADD_DEFINITIONS (${QT_DEFINITIONS})
 ADD_DEFINITIONS (-DQT_PLUGIN)
@@ -77,6 +79,7 @@ ADD_DEFINITIONS (-DQT_SHARED)
 
 ADD_LIBRARY ({{ plugin_name | lower }}plugin SHARED ${Plugin_SRCS})
 
+{% if not intree -%}
 TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin 
 	${QT_LIBRARIES} 
 	${QT_QTXML_LIBRARY} 
@@ -90,5 +93,20 @@ TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin
 	${RBDL_LIBRARY}
 	${TOOLKIT_LIB}
 )
+{%- else -%}
+TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin
+	${QT_LIBRARIES}
+	${QT_QTXML_LIBRARY}
+	Qt5::Core
+	Qt5::Gui
+	Qt5::Widgets
+	Qt5::3DCore
+	Qt5::3DExtras
+	Qt5::3DRender
+	Qt5::3DInput
+	${RBDL_LIBRARY}
+	toolkitlib
+)
+{%- endif %}
 
 INSTALL( TARGETS {{ plugin_name | lower }}plugin LIBRARY DESTINATION ${PLUGIN_INSTALL_DIR})	
