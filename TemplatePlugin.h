@@ -5,20 +5,20 @@
 #include <QString>
 
 #include "toolkit_interfaces.h"
+#include "toolkit_config.h"
 #include "toolkit_errors.h"
 #include "util.h"
-
 {% if add_extension -%}
 #include "{{ plugin_name }}ModelExtension.h"
 {%- endif %}
 
 {% if core -%}
-class {{ plugin_name }}Plugin : public QObject, public CoreInterface {
+class TOOLKIT_PLUGIN_DLLAPI {{ plugin_name }}Plugin : public QObject, public CoreInterface {
 	Q_OBJECT
 	Q_INTERFACES(CoreInterface)
 	Q_PLUGIN_METADATA(IID CoreInterface_iid FILE "metadata.json")
 {%- else %}
-class {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
+class TOOLKIT_PLUGIN_DLLAPI {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 	Q_OBJECT
 	Q_INTERFACES(OptionalInterface)
 	Q_PLUGIN_METADATA(IID OptionalInterface_iid FILE "metadata.json")

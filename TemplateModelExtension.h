@@ -7,7 +7,9 @@
 #include <Qt3DCore>
 {%- endif %}
 
-class {{ plugin_name }}ModelExtension : public WrapperExtension {
+#include "toolkit_config.h"
+
+class TOOLKIT_PLUGIN_DLLAPI {{ plugin_name }}ModelExtension : public WrapperExtension {
 	private:
 		// Vars
 		// 
