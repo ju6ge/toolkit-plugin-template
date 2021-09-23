@@ -12,13 +12,19 @@
 #include "{{ plugin_name }}ModelExtension.h"
 {%- endif %}
 
+#ifdef  TOOLKIT_COMPILE_PLUGIN_{{ plugin_name | upper }}
+#define TOOLKIT_PLUGIN_{{ plugin_name | upper }}_DLLAPI TOOLKIT_DLLEXPORT
+#else
+#define TOOLKIT_PLUGIN_{{ plugin_name | upper }}_DLLAPI TOOLKIT_PLUGIN_DLLAPI
+#endif
+
 {% if core -%}
-class TOOLKIT_PLUGIN_DLLAPI {{ plugin_name }}Plugin : public QObject, public CoreInterface {
+class TOOLKIT_PLUGIN_{{ plugin_name | upper }}_DLLAPI {{ plugin_name }}Plugin : public QObject, public CoreInterface {
 	Q_OBJECT
 	Q_INTERFACES(CoreInterface)
 	Q_PLUGIN_METADATA(IID CoreInterface_iid FILE "metadata.json")
 {%- else %}
-class TOOLKIT_PLUGIN_DLLAPI {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
+class TOOLKIT_PLUGIN_{{ plugin_name | upper }}_DLLAPI {{ plugin_name }}Plugin : public QObject, public OptionalInterface {
 	Q_OBJECT
 	Q_INTERFACES(OptionalInterface)
 	Q_PLUGIN_METADATA(IID OptionalInterface_iid FILE "metadata.json")

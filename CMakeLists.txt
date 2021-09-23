@@ -78,7 +78,7 @@ ADD_DEFINITIONS (-DQT_PLUGIN)
 ADD_DEFINITIONS (-DQT_SHARED)
 
 ADD_LIBRARY ({{ plugin_name | lower }}plugin SHARED ${Plugin_SRCS})
-TARGET_COMPILE_DEFINITIONS ({{ plugin_name | lower }}plugin PRIVATE TOOLKIT_COMPILE_PLUGIN)
+TARGET_COMPILE_DEFINITIONS ({{ plugin_name | lower }}plugin PRIVATE TOOLKIT_COMPILE_PLUGIN_{{ plugin_name | upper}})
 
 {% if not intree -%}
 TARGET_LINK_LIBRARIES ({{ plugin_name | lower }}plugin 
